@@ -1,30 +1,14 @@
-// Navbar Color Change on Scroll
-window.addEventListener('scroll', function() {
-    const nav = document.querySelector('.navbar');
-    if(window.scrollY > 50) {
-        nav.classList.add('scrolled');
+// Sticky Navbar with Background
+window.addEventListener('scroll', () => {
+    const navbar = document.querySelector('.navbar');
+    if (window.scrollY > 100) {
+        navbar.style.background = '#0b0e14';
+        navbar.style.padding = '10px 0';
     } else {
-        nav.classList.remove('scrolled');
+        navbar.style.background = 'rgba(11, 14, 20, 0.8)';
+        navbar.style.padding = '20px 0';
     }
 });
-
-// Reveal Animation for Service Cards
-function reveal() {
-    var reveals = document.querySelectorAll('.reveal');
-    for (var i = 0; i < reveals.length; i++) {
-        var windowHeight = window.innerHeight;
-        var elementTop = reveals[i].getBoundingClientRect().top;
-        var elementVisible = 150;
-        if (elementTop < windowHeight - elementVisible) {
-            reveals[i].classList.add('active');
-        }
-    }
-}
-
-window.addEventListener('scroll', reveal);
-
-// Initial call for elements already in view
-reveal();
 
 // Smooth Scroll for Navigation
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -34,4 +18,25 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             behavior: 'smooth'
         });
     });
+});
+
+// Simple Scroll Reveal Effect
+const observerOptions = {
+    threshold: 0.1
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+        }
+    });
+}, observerOptions);
+
+document.querySelectorAll('.card').forEach(card => {
+    card.style.opacity = "0";
+    card.style.transform = "translateY(50px)";
+    card.style.transition = "0.6s ease-out";
+    observer.observe(card);
 });
