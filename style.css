@@ -1,65 +1,73 @@
-// Wait for DOM to load
-document.addEventListener('DOMContentLoaded', () => {
-    
-    // 1. Navbar Background Change on Scroll
-    const navbar = document.querySelector('.navbar');
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            navbar.style.background = '#070b14'; // Thoda dark ho jayega scroll pr
-            navbar.style.padding = '15px 8%';
-            navbar.style.boxShadow = '0 5px 20px rgba(0,0,0,0.5)';
-        } else {
-            navbar.style.background = 'rgba(15, 23, 42, 0.95)';
-            navbar.style.padding = '20px 8%';
-            navbar.style.boxShadow = 'none';
-        }
-    });
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&display=swap');
 
-    // 2. Mobile Menu (Burger Menu) Logic
-    const burger = document.querySelector('.burger');
-    const nav = document.querySelector('.nav-links');
-    const navLinks = document.querySelectorAll('.nav-links li');
+:root {
+    --primary: #00d2ff;
+    --secondary: #3a7bd5;
+    --dark: #050505;
+    --card-bg: #111111;
+    --text: #ffffff;
+}
 
-    burger.addEventListener('click', () => {
-        // Toggle Nav
-        nav.classList.toggle('nav-active');
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
+body { background-color: var(--dark); color: var(--text); overflow-x: hidden; }
 
-        // Animate Links
-        navLinks.forEach((link, index) => {
-            if (link.style.animation) {
-                link.style.animation = '';
-            } else {
-                link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7 + 0.3}s`;
-            }
-        });
+/* Navbar Heavy Look */
+.navbar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 25px 10%; position: fixed; width: 100%; z-index: 1000;
+    transition: 0.5s; background: transparent;
+}
+.navbar.scrolled { background: rgba(0, 0, 0, 0.95); padding: 15px 10%; border-bottom: 2px solid var(--primary); }
+.logo { font-size: 1.8rem; font-weight: 900; color: white; }
+.logo span { color: var(--primary); }
+.nav-links { display: flex; list-style: none; }
+.nav-links li a { color: white; text-decoration: none; margin-left: 35px; font-weight: 600; font-size: 1.1rem; }
 
-        // Burger Animation
-        burger.classList.toggle('toggle');
-    });
+/* Hero Section */
+.hero {
+    height: 100vh;
+    background: linear-gradient(45deg, rgba(0,0,0,0.8), rgba(0,210,255,0.2)), 
+                url('https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1920&q=80');
+    background-size: cover; background-position: center;
+    display: flex; align-items: center; justify-content: center; text-align: center;
+}
+.hero h1 { font-size: 5rem; font-weight: 900; text-transform: uppercase; letter-spacing: -2px; }
+.tagline { font-size: 1.5rem; color: var(--primary); margin-bottom: 30px; font-weight: 300; }
+.btn-primary { 
+    padding: 15px 40px; background: linear-gradient(to right, var(--primary), var(--secondary));
+    color: white; text-decoration: none; border-radius: 50px; font-weight: 700; transition: 0.3s;
+}
 
-    // 3. Smooth Scrolling for Navigation Links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
-        });
-    });
+/* Services Grid */
+.services-section, .local-section { padding: 100px 10%; }
+.section-title { font-size: 3rem; margin-bottom: 60px; text-align: center; }
+.section-title span { color: var(--primary); }
 
-    // 4. Reveal Elements on Scroll (Heavy Animation)
-    const reveal = () => {
-        const reveals = document.querySelectorAll('.service-card');
-        for (let i = 0; i < reveals.length; i++) {
-            let windowHeight = window.innerHeight;
-            let elementTop = reveals[i].getBoundingClientRect().top;
-            let elementVisible = 150;
-            if (elementTop < windowHeight - elementVisible) {
-                reveals[i].style.opacity = "1";
-                reveals[i].style.transform = "translateY(0)";
-            }
-        }
-    };
+.services-grid { display: flex; justify-content: center; }
+.service-card {
+    background: var(--card-bg); padding: 50px; border-radius: 20px;
+    border: 1px solid #333; width: 100%; max-width: 800px;
+    transition: 0.5s; opacity: 0; transform: translateY(40px); /* JS Reveal */
+}
+.service-card.active { opacity: 1; transform: translateY(0); }
+.service-card h3 { font-size: 2rem; color: var(--primary); margin-bottom: 25px; }
+.service-card ul { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; list-style: none; }
+.service-card li { font-size: 1.1rem; color: #ccc; }
+.service-card i { margin-right: 10px; color: var(--primary); }
 
-    window.addEventListener('scroll', reveal);
-});
+/* Footer */
+footer { background: #000; padding: 80px 10% 20px; border-top: 5px solid var(--primary); }
+.footer-container { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 40px; }
+.footer-info h3 { color: var(--primary); margin-bottom: 20px; }
+.footer-info p { margin-bottom: 10px; font-size: 1.1rem; }
+.bottom-bar { text-align: center; margin-top: 50px; padding-top: 20px; border-top: 1px solid #222; color: #666; }
+
+/* Responsive Burger */
+.burger { display: none; cursor: pointer; }
+.burger div { width: 25px; height: 3px; background: white; margin: 5px; }
+
+@media screen and (max-width: 768px) {
+    .hero h1 { font-size: 3rem; }
+    .nav-links { display: none; }
+    .burger { display: block; }
+}
